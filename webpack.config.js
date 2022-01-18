@@ -1,6 +1,8 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
+  mode: 'development',
   // entry 進入點
   entry: './src/index.jsx',
   // output 是打包後的檔案產生位置
@@ -33,6 +35,40 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.(scss)$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: { localIdentName: '[name]__[local]___[hash:base64:5]' },
+            },
+          },
+          {
+            loader: 'sass-loader',
+          },
+        ],
+      },
     ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: './index.css', // 路徑加輸出的 CSS 檔名
+    }),
+  ],
+  devServer: {
+    // 指定 webpack- dev-server 要去讀哪個路徑
+    // contentBase: './dist',
+    static: './dist',
+    // 路徑的部分記得要和上方打包時的 output.path 相同
+    port: 8080,
+  },
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
   },
 };
