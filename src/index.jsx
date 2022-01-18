@@ -1,62 +1,83 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
+
 import styles from './index.scss';
 
-function Main() {
-  return <h1>Hi JSX！</h1>
-}
+const Counter = () => {
+  useEffect(() => {
+    console.log('Component Render 後執行');
+    return () => {
+      console.log('Component 移除執行');
+    }
+  }, []);
 
-function Main2() {
-  return <h1 className={styles.main}>Hi JSX！添加CSS</h1>
-}
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    console.log(`State 改變前 ${count}`)
+    return () => {
+      console.log(`State 改變後 ${count}`);
+    };
+  }, [count]);
 
-function HelloWorld() {
   return (
-    <div
-      className={`${styles.HelloWordColor} ${styles.HelloWordSize}`}
-      style={{
-        fontWeight: 600,
-        'font-style': 'italic',
-      }}
-    >
-      Hello World!
-    </div>
+    <>
+      <h1 className={styles.main}>{count}</h1>
+      <button type="button" onClick={() => { setCount(count + 1); }}>
+        點我加壹
+      </button>
+    </>
   )
 }
+const Main = () => {
+  const [hiddenCounter, setHiddenCounter] = useState(false);
+  return (
+    <>
+      <button type="button" onClick={() => { setHiddenCounter(!hiddenCounter); }}>
+        開啟、關閉計數器
+      </button>
+      {
+        hiddenCounter ? null : <Counter />
+      }
+    </>
+  );
+};
+
 // 自帶傳入 props 參數
 const SayHello = (props) => {
   // 接收 Props
   const { names } = props;
-
   const isEmpty = (value) => value === '';
-
-  return names.map((name) => (
-    // 1.以 map 讀取 names 裡的每一個值。
-    // 2.將讀到的值以 name 送入要 Return 的 DOM 裡。
-    // 3.最後再將產生的 DOM 陣列整包回傳。
+  return (
     <div
-      key={name}
-      className={
-        `${styles.mainBackground}
-         ${isEmpty(name) ? '' : styles.main}`
-      }
-      style={{
-        'font-size': 28,
-      }}
+      className={styles.mainBackground}
+      style={{ fontSize: 28 }}
     >
-      {`Hello ${isEmpty(name) ? 'world' : name}`}
+      {names.map(name => (
+        <div
+          key={name}
+          className={isEmpty(name) ? '' : styles.main}
+        >
+          {`Hi ${isEmpty(name) ? 'Taiwanese' : name}`}
+        </div>
+      ))}
     </div>
-  ));
+  );
+};
+
+SayHello.propTypes = {
+  // 定義型別為陣列，且型別的內容為字串 string
+  names: PropTypes.arrayOf(PropTypes.string),
+};
+SayHello.defaultProps = {
+  names: ['Default string'],
 };
 
 ReactDom.render(<Main />, document.getElementById('root'));
 
-ReactDom.render(<Main2 />, document.getElementById('root2'));
-
-ReactDom.render(<HelloWorld />, document.getElementById('root3'));
-
 ReactDom.render(
-  <SayHello names={['World', 'Air', '', 'Sun', 'Water']} />,
+  // 故意放錯誤資料型別,提醒誤放入不正確的 Props
+  <SayHello names={[1, 2, 3]} />,
   document.getElementById('root4'),
 );
 

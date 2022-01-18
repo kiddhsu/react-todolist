@@ -64,7 +64,7 @@ module.exports = {
     // contentBase: './dist',
     static: './dist',
     // 路徑的部分記得要和上方打包時的 output.path 相同
-    port: 8080,
+    port: 9000,
   },
   performance: {
     hints: false,
