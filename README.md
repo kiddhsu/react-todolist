@@ -18,7 +18,7 @@ devServer: {
   },
 
 # Day 6 
-###### inline style，都要用駝峰式取得
+###### inline style
 
 1. 用駝峰式取得 CSS 樣式名稱，且不能有 - 號<br>
 若要使用 CSS 的短橫線，可將所有的 key 都變成字串<br>
