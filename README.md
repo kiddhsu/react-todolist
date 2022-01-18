@@ -19,7 +19,7 @@ devServer: {
 
 # Day 6 
 ###### inline style 注意事項
-**筆記**
+
 JavaScript 中的 Object key 不能有 - 號，因此 inline 的 style，都要用駝峰式取得 CSS 樣式名稱，<br>
 ex:background-color 要寫成 backgroundColor。<br>
 若要使用 CSS 的短橫線，可將所有的 key 都變成字串<br>
