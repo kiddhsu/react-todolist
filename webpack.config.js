@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   mode: 'development',
   // entry 進入點
-  entry: './src/index.jsx',
+  entry: ['@babel/polyfill', './src/index.jsx'],
   // output 是打包後的檔案產生位置
   output: {
     // 打包後的檔案名稱
@@ -12,6 +12,7 @@ module.exports = {
     // 指定路徑
     path: path.resolve(__dirname, './dist/'),
   },
+  resolve: { extensions: ['.js', '.jsx'] },
   module: {
     // 有新要轉換語法的地方，都會在這設置
     rules: [
